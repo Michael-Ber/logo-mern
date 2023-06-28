@@ -60,32 +60,32 @@ export const Header = () => {
                         </li>
                     </ul>
                 </div>
-                <div class="burger">
-                    <div class="burger-btn">
-                        <span class="burger-btn-line"></span>
-                        <span class="burger-btn-line"></span>
-                        <span class="burger-btn-line"></span>
+                <div className="burger">
+                    <div className="burger-btn">
+                        <span className="burger-btn-line"></span>
+                        <span className="burger-btn-line"></span>
+                        <span className="burger-btn-line"></span>
                     </div>
-                    <div class="burger-menu">
-                        <nav class="burger__nav burger__nav_sm">
-                            <ul class="burger__nav-list burger__nav-list_sm">
-                                <li class="burger__nav-item">
-                                    <a href="#" class="burger__nav-link burger__nav-link_sm">Бренды</a>
+                    <div className="burger-menu">
+                        <nav className="burger__nav burger__nav_sm">
+                            <ul className="burger__nav-list burger__nav-list_sm">
+                                <li className="burger__nav-item">
+                                    <a href="#" className="burger__nav-link burger__nav-link_sm">Бренды</a>
                                 </li>
-                                <li class="burger__nav-item">
-                                    <a href="#" class="burger__nav-link burger__nav-link_sm">Гарантия</a>
+                                <li className="burger__nav-item">
+                                    <a href="#" className="burger__nav-link burger__nav-link_sm">Гарантия</a>
                                 </li>
-                                <li class="burger__nav-item">
-                                    <a href="#" class="burger__nav-link burger__nav-link_sm">Распродажа</a>
+                                <li className="burger__nav-item">
+                                    <a href="#" className="burger__nav-link burger__nav-link_sm">Распродажа</a>
                                 </li>
-                                <li class="burger__nav-item">
-                                    <a href="#" class="burger__nav-link burger__nav-link_sm">Оплата</a>
+                                <li className="burger__nav-item">
+                                    <a href="#" className="burger__nav-link burger__nav-link_sm">Оплата</a>
                                 </li>
-                                <li class="burger__nav-item">
-                                    <a href="#" class="burger__nav-link burger__nav-link_sm">Доставка и сборка</a>
+                                <li className="burger__nav-item">
+                                    <a href="#" className="burger__nav-link burger__nav-link_sm">Доставка и сборка</a>
                                 </li>
-                                <li class="burger__nav-item">
-                                    <a href="#" class="burger__nav-link burger__nav-link_sm">Контакты</a>
+                                <li className="burger__nav-item">
+                                    <a href="#" className="burger__nav-link burger__nav-link_sm">Контакты</a>
                                 </li>
                             </ul>
                         </nav>

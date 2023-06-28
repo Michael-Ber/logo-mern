@@ -5,7 +5,7 @@ export const fetchData = async(url, {
         const resp = await fetch(url, {
             method, headers, body
         });
-        return resp.json();
+        return await resp.json();
     } catch (error) {
         console.log(error)
     }

@@ -2,7 +2,7 @@
     {
         "title": "BH Fitness F1 G6414V",
         "descr": "Беговая дорожка",
-        "imgUrl": "/assets/images/carving/1.jpg",
+        "imgUrl": "/assets/img/main/run_track_mini_1.jpg",
         "oldCost": 64990,
         "newCost": 58990,
         "type": "электрическая",
@@ -12,7 +12,7 @@
     {
         "title": "BH Fitness F2 W8745M",
         "descr": "Беговая дорожка",
-        "imgUrl": "/assets/images/carving/1.jpg",
+        "imgUrl": "/assets/img/main/run_track_mini_2.jpg",
         "oldCost": 51550,
         "newCost": 45550,
         "type": "механическая",
