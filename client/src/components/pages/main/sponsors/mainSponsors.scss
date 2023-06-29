@@ -10,14 +10,6 @@
 
     &__wrapper {
         position: relative;
-        .tns-inner {
-            width: 85%;
-            margin: 0 auto !important;
-            overflow: hidden; 
-        }
-        #tns3-iw {
-            margin: 0 auto;
-        }
     }
     &__slider {
         position: relative;
@@ -36,9 +28,18 @@
         z-index: 1000;
         &__prev {
             left: 0;
+            @media(max-width: 991px) {
+                left: -30px;
+            }
+            @media(max-width: 575px) {
+                left: 0;
+            }
         }
         &__next {
             right: 0;
+            @media(max-width: 575px) {
+                right: 0;
+            }
         }
     }
 }

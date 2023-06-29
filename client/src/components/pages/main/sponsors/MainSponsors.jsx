@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import './mainSponsors.scss';
 
 import { fetchData } from '../../../../service/fetchData';
@@ -19,7 +20,10 @@ import 'swiper/css/pagination';
 
 export const MainSponsors = () => {
 
-    const [sponsors, setSponsors] = useState(null)
+    const [sponsors, setSponsors] = useState(null);
+
+    const prev = useRef(null);
+    const next = useRef(null);
 
     useEffect(() => {
         fetchData("http://localhost:3006/sponsors", {})
@@ -30,9 +34,9 @@ export const MainSponsors = () => {
     const sponsorsToRender = sponsors && sponsors.map(slide => {
         return (
             <SwiperSlide key={slide._id} className="sponsors__item">
-                <div >
-                    <img src={slide.imgUrl} alt={slide.title}/>
-                </div>
+                
+                <img src={slide.imgUrl} alt={slide.title}/>
+                
             </SwiperSlide>
         )
     })
@@ -76,13 +80,10 @@ const Slider = ({sponsorsToRender}) => {
                     400: {
                         slidesPerView: 2,
                     },
-                    630: {
+                    768: {
                         slidesPerView: 3,
                     },
-                    900: {
-                        slidesPerView: 4,
-                    },
-                    1100: {
+                    992: {
                         slidesPerView: 5,
                     }
                 }
@@ -90,13 +91,16 @@ const Slider = ({sponsorsToRender}) => {
             
             className="sponsors__slider">
                 { sponsorsToRender }
-                <div className="arrow arrow__prev">
-                    <img src={arrowLeft} alt="prev"/>
-                </div>
-                <div className="arrow arrow__next">
-                    <img src={arrowRight} alt="next"/>
-                </div>
+
+                
             </Swiper>
+            <div className="arrow arrow__prev">
+                <img src={arrowLeft} alt="prev"/>
+            </div>
+            
+            <div className="arrow arrow__next">
+                <img src={arrowRight} alt="next"/>
+            </div>
         </div>
     )
 }

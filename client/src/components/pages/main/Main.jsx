@@ -7,6 +7,8 @@ import { MainSearch } from './search/MainSearch';
 import { MainSlider } from './carousel/MainSlider';
 import { MainPopular } from './popular/MainPopular';
 import { MainSponsors } from './sponsors/MainSponsors';
+import { MainAbout } from './about/MainAbout';
+import { MainLinks } from './links/MainLinks';
 
 const Main = () => {
 
@@ -31,6 +33,8 @@ const Main = () => {
             </section>
 
             <MainSponsors />
+            <MainAbout />
+            <MainLinks />
         </>
         
     )
