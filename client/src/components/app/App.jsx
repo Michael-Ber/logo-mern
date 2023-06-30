@@ -5,6 +5,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import './app.scss';
 
 import { fetchRegister } from '../../redux/auth/AuthSlice';
+import { fetchMe } from '../../redux/auth/AuthSlice';
 import { gettingGoods } from '../../redux/goods/GoodsSlice';
 
 import Register from '../pages/auth/Register';
@@ -21,8 +22,10 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+      dispatch(fetchMe());
       dispatch(gettingGoods());
-  }, [])
+  }, [dispatch])
+
 
   return (
     <div className="app">

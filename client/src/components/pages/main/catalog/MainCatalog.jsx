@@ -1,22 +1,62 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import './mainCatalog.scss';
 
 import tableImg from "../../../../assets/img/main/table_tennis.jpg";
 
 export const MainCatalog = () => {
+
+    const listRef = useRef(null);
+    const burgerRef = useRef(null);
+    const [burgerOpen, setBurgerOpen] = useState(true);
+
+    const burgerHandle = () => {
+        const burgerLines = burgerRef.current.children;
+        setBurgerOpen(state => !state);
+        if(burgerOpen) {
+            transformBurgerLines(burgerLines, burgerOpen);
+            listRef.current.classList.add('catalog__list_active');
+
+        }else {
+            transformBurgerLines(burgerLines, burgerOpen);
+            listRef.current.classList.remove('catalog__list_active')
+        }
+    }
+
+    const transformBurgerLines = (lines, opened) => {
+        if(opened) {
+            Array.from(lines).forEach(line => {
+                switch(line.dataset.line) {
+                    case '0': line.style.transform = 'rotate(45deg) translate(3px, 3px)';break;
+                    case '1': line.style.display = 'none'; break;
+                    case '2': line.style.transform = 'rotate(-45deg) translate(2px, -2px)';break;
+                    default: return null
+                }
+            })
+        }else {
+            Array.from(lines).forEach(line => {
+                switch(line.dataset.line) {
+                    case '0': line.style.transform = 'rotate(0) translate(0, 0)';break;
+                    case '1': line.style.display = 'block'; break;
+                    case '2': line.style.transform = 'rotate(0) translate(0, 0)';break;
+                    default: return null
+                }
+            })
+        }
+    }
+
   return (
         <div className="main__catalog">
             <div className="catalog__header">
                 <span className="catalog__title">
                     Каталог товаров
                 </span>
-                <div className="catalog__burger burgerBtn">
-                    <span className="catalog__burger-btn-line"></span>
-                    <span className="catalog__burger-btn-line"></span>
-                    <span className="catalog__burger-btn-line"></span>
+                <div onClick={burgerHandle} ref={burgerRef} className="catalog__burger burgerBtn">
+                    <span className="catalog__burger-btn-line" data-line='0'></span>
+                    <span className="catalog__burger-btn-line" data-line='1'></span>
+                    <span className="catalog__burger-btn-line" data-line='2'></span>
                 </div>
             </div>
-            <ul className="catalog__list">
+            <ul ref={listRef} className="catalog__list">
                 <li data-popup="0" className="catalog__item catalog__item_parent">
                     <span>Беговые дорожки</span> 
                 </li>

@@ -1,10 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import './header.scss';
+
+import { logout } from '../../redux/auth/AuthSlice';
 
 import bgImg from "../../assets/img/main/header_bg.jpg";
 import dump from "../../assets/icons/main/dump.png";
 
 export const Header = () => {
+
+    const { user } = useSelector(state => state.authSlice);
+
+    const username = user && user.username;
+
+    const dispatch = useDispatch();
+
+    const logoutHandler = () => {
+        dispatch(logout());
+    }
+
   return (
     <header className="header">
         <img src={bgImg} alt="header_background" className="header__bg"/>
@@ -40,10 +55,10 @@ export const Header = () => {
                         </ul>
                     </nav>
                 </div>
-                <a href="#" className="header__logo">
+                <Link to={"/"} className="header__logo">
                     <div className="header__logo-title">LOGO</div>
                     <div className="header__logo-subtitle">Спортивный магазин</div>
-                </a>
+                </Link>
                 <div className="header__auth">
                     <a href="#" className="header__auth-link">Вход /</a>
                     <a href="#" className="header__auth-link">Регистрация</a>
@@ -94,12 +109,16 @@ export const Header = () => {
             </div>
             <div className="subheader">
                 <div className="subheader__left">
-                    <a href="#" className="subheader__link">Вход</a>
-                    <a href="#" className="subheader__link">Регистрация</a>
-                    <a href="#" className="subheader__link">sport@gmail.com</a>
+                    <div className='subheader__link-wrapper'>
+                        <Link to={"/login"} className="subheader__link link-login">{username ? username + ',': 'Войти'}</Link>
+                        {username && <span onClick={logoutHandler}> Выйти</span>}
+                    </div>
+                    
+                    <Link to={"/register"} className="subheader__link">Регистрация</Link>
+                    <a href='mailto:test@test.test' className="subheader__link">sport@gmail.com</a>
                 </div>
                 <div className="subheader__right">
-                    <a href="#" className="subheader__call">Обратный звонок</a>
+                    <a href="tel:88888888888" className="subheader__call">Обратный звонок</a>
                     <div className="subheader__opening">
                         <span>
                             <strong>Пн-Вт:</strong>

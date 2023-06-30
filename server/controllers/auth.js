@@ -9,7 +9,7 @@ export const register = async(req, res) => {
         const { password } = req.body;
 
         const isExist = await User.findOne({username});
-        if( isExist ) return res.json({message: "This user is already exist"});
+        if( isExist ) return res.status(400).json({message: "Пользователь с таким именем уже существует"});
 
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
@@ -23,7 +23,7 @@ export const register = async(req, res) => {
         await newUser.save();
         return res.json({message: "Регистрация прошла успешно", user: newUser, token})
     } catch (error) {
-        res.json({message: "Error while registering"})
+        res.json({message: "Ошибка в процессе регистрации"})
     }
 }
 
@@ -54,8 +54,9 @@ export const login = async(req, res) => {
 export const me = async(req, res) => {
     try {
         const user = await User.findById(req.userId);
+        const token = req.headers.authorization;
         if(!user) return res.json({message: "Не авторизованы"})
-        return res.json({user})
+        return res.json({user, token})
     } catch (error) {
         res.json({message: "Error while checking authorization"})
     }

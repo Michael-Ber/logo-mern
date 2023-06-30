@@ -49,13 +49,18 @@
             }
         }
         &__list {
-            display: none;
-            margin-top: 30px;
+            visibility: hidden;
+            height: 0;
+            margin: 0;
+            opacity: 0;
+            transition: .2s opacity ease-in;
             @media(max-width: 767px) {
                 margin-top: 50px;
             }
             &_active {
-                display: block;
+                visibility: visible;
+                height: auto;
+                opacity: 1;
             }
         }
         &__item {
