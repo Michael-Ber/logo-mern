@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 import './app.scss';
 
@@ -20,10 +20,12 @@ import { Good } from '../pages/good/Good';
 const App = () => {
 
   const dispatch = useDispatch();
+  const nav = useNavigate();
 
   useEffect(() => {
       dispatch(fetchMe());
       dispatch(gettingGoods());
+      nav("/main");
   }, [dispatch])
 
 
@@ -36,8 +38,8 @@ const App = () => {
         <Route path='/login' element={<Login />}/>
         <Route path='/catalog' element={<Catalog />}/>
         <Route path='/cart' element={<Cart />}/>
-        <Route path='/:id' element={<Good />} />
-        <Route path='/' element={<Main />}/>
+        {/* <Route path='/main/:id' element={<Good />} /> */}
+        <Route path='/main/*' element={<Main />}/>
 
         
       </Routes>
