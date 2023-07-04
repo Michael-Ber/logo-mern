@@ -14,7 +14,7 @@ import { Header } from '../header/Header';
 import { Footer } from '../footer/Footer';
 import Main from '../pages/main/Main';
 import { Catalog } from '../pages/catalog/Catalog';
-import { Cart } from '../pages/cart/Cart';
+
 import { Good } from '../pages/good/Good';
 
 const App = () => {
@@ -37,8 +37,7 @@ const App = () => {
         <Route path='/register' element={<Register />}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/catalog' element={<Catalog />}/>
-        <Route path='/cart' element={<Cart />}/>
-        {/* <Route path='/main/:id' element={<Good />} /> */}
+        
         <Route path='/main/*' element={<Main />}/>
 
         

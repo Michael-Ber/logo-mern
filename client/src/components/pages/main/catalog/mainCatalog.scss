@@ -54,9 +54,9 @@
             margin: 0;
             opacity: 0;
             transition: .2s opacity ease-in;
-            @media(max-width: 767px) {
-                margin-top: 50px;
-            }
+            // @media(max-width: 767px) {
+            //     margin-top: 50px;
+            // }
             &_active {
                 visibility: visible;
                 height: auto;

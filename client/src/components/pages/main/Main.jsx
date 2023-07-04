@@ -10,6 +10,7 @@ import { MainPopular } from './popular/MainPopular';
 import { MainSponsors } from './sponsors/MainSponsors';
 import { MainAbout } from './about/MainAbout';
 import { MainLinks } from './links/MainLinks';
+import { Cart } from '../../pages/cart/Cart';
 
 import { Good } from '../good/Good';
 
@@ -30,6 +31,7 @@ const Main = () => {
                             <MainSearch />
                             <Routes>
                                 <Route path='/:id' element={<Good />}/>
+                                <Route path='/cart' element={<><Cart /></>}/>
                                 <Route path="/" element={<><MainSlider /><MainPopular /></>}/>  
                             </Routes>
                             

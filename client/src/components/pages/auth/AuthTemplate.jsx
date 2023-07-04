@@ -19,7 +19,7 @@ export const AuthTemplate = ({ title, submit }) => {
                 setUsername(''); 
                 setPassword('') ;
                 if(res.payload.user) {
-                    nav("/");
+                    nav("/main");
                     setMsgstyles({color: 'green', display: 'block'});
                 }else {
                     setMsgstyles({color: 'red', display: 'block'});

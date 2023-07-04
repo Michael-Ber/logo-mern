@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import "./good.scss";
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
-import { MainNews } from '../main/news/MainNews';
-import { MainLinks } from '../main/links/MainLinks';
+import { Tooltip } from './Tooltip';
 
 
 import sub from "../../../assets/icons/order/sub.png";
@@ -18,7 +17,42 @@ export const Good = () => {
 
   const { id } = useParams();
   const { goods } = useSelector(state => state.goodsSlice);
+  const { user } = useSelector(state => state.authSlice);
   const good = goods && goods.filter(item => item._id === id)[0];
+
+  const [amount, setAmount] = useState(1);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const btnsRef = useRef(null);
+  const contentsRef = useRef(null);
+
+  const nav = useNavigate();
+
+  const handleTabs = (e) => {
+    Array.from(btnsRef.current.children)
+      .forEach(btn => btn.classList.remove('btns-good-tabs--main__btn_active')); 
+    Array.from(contentsRef.current.children)
+      .forEach(content => content.classList.remove('contents-good-tabs--main__content_active'));
+    if(e.target.tagName === 'SPAN') {
+      e.target.parentNode.classList.add('btns-good-tabs--main__btn_active');
+      document.querySelector(`div[data-tab = ${e.target.parentNode.dataset.tab}]`).classList.add('contents-good-tabs--main__content_active')
+    }else {
+      e.target.classList.add('btns-good-tabs--main__btn_active');
+      document.querySelector(`div[data-tab = ${e.target.dataset.tab}]`).classList.add('contents-good-tabs--main__content_active')
+    }
+  }
+
+  const cartHandler = () => {
+    if(!user) {
+      setShowTooltip(true);
+      setTimeout(() => {
+        setShowTooltip(false);
+      }, 3000)
+    }else {
+      nav("/main/cart")
+    }
+  }
+
 
   return (
     <div className='main'>
@@ -65,15 +99,30 @@ export const Good = () => {
                                 <p className="descr-order-info-good-main__new-price">{good.newCost} <span>&#8381;</span></p>
                             </div>
                             <div className="order-info-good-main__amount amount-order-info-good-main">
-                                <img src={sub} alt="arrow-sub" className="amount-order-info-good-main__sub"/>
-                                <input value="1" type="number" className="amount-order-info-good-main__input"/>
-                                <img src={add} alt="arrow-add" className="amount-order-info-good-main__add"/>
+                                <img 
+                                  onClick={() => setAmount(state => state > 1 ? state - 1: 1)}
+                                  src={sub} 
+                                  alt="arrow-sub" 
+                                  className="amount-order-info-good-main__sub"/>
+                                <input 
+                                  value={amount}
+                                  onChange={e => setAmount(e.target.value)}
+                                  type="number" 
+                                  className="amount-order-info-good-main__input"/>
+                                <img 
+                                  onClick={() => setAmount(state => state < 10 ? state + 1: 10)}
+                                  src={add} 
+                                  alt="arrow-add" 
+                                  className="amount-order-info-good-main__add"/>
                             </div>
-                            <div className="order-info-good-main__cort cort-order-info-good-main">
-                                <a href="#" className="cort-order-info-good-main__btn">В корзину</a>
-                                <a href="#" className="cort-order-info-good-main__to-cort">
+                            <div 
+                              onClick={cartHandler}
+                              className="order-info-good-main__cort cort-order-info-good-main">
+                                <p className="cort-order-info-good-main__btn">В корзину</p>
+                                <p className="cort-order-info-good-main__to-cort">
                                     <img src={dump} alt="cort"/>
-                                </a>
+                                </p>
+                                <Tooltip show={showTooltip} message={'Необходима авторизация'}/>
                             </div>
                         </div>
                     </div>
@@ -114,11 +163,27 @@ export const Good = () => {
 
 
         <div className="main__good-tabs good-tabs--main">
-            <div className="good-tabs--main__btns btns-good-tabs--main">
-                <button className="btns-good-tabs--main__btn btns-good-tabs--main__btn_active" data-tab="descr" aria-label="description button"><span>Описание</span> </button>
-                <button className="btns-good-tabs--main__btn" data-tab="feature" aria-label="characteristics button"><span>Характеристики</span></button>
+            <div 
+              ref={btnsRef} 
+              className="good-tabs--main__btns btns-good-tabs--main">
+                <button
+                  onClick={e => handleTabs(e)} 
+                  className="btns-good-tabs--main__btn btns-good-tabs--main__btn_active"
+                  data-tab="descr" 
+                  aria-label="description button">
+                    <span>Описание</span>  
+                </button>
+                <button 
+                  onClick={e => handleTabs(e)}  
+                  className="btns-good-tabs--main__btn" 
+                  data-tab="feature" 
+                  aria-label="characteristics button">
+                    <span>Характеристики</span> 
+                </button>
             </div>
-            <div className="good-tabs--main__contents contents-good-tabs--main">
+            <div 
+              ref={contentsRef} 
+              className="good-tabs--main__contents contents-good-tabs--main">
                 <div className="contents-good-tabs--main__content contents-good-tabs--main__content_active" data-tab="descr">
                     <p>Начав с производства качественных деревянных лыж, во второй половине 90-х Nordic Track расширил производство, 
                         верно угадав тренд развития спортивного оборудования. С этого момента беговые дорожки Nordic Track стали 

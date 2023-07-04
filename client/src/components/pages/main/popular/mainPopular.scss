@@ -200,16 +200,12 @@
                 }
                 @media(max-width: 575px) {
                     display: block;
-                    text-align: center;
                 }
             }
             &__type {
                 font-weight: 300;
                 &_active {
                     color: #c2c2c2;
-                }
-                @media(max-width: 575px) {
-                    text-align: center;
                 }
             }
             &__old-cost {

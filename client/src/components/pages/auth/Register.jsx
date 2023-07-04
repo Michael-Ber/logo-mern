@@ -7,6 +7,7 @@ import { fetchRegister } from '../../../redux/auth/AuthSlice';
 
 const Register = () => {
 
+
   const dispatch = useDispatch();
 
   const submitHandler = (e, data) => {
