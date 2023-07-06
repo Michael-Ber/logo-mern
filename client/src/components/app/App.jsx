@@ -14,8 +14,7 @@ import { Header } from '../header/Header';
 import { Footer } from '../footer/Footer';
 import Main from '../pages/main/Main';
 import { Catalog } from '../pages/catalog/Catalog';
-
-import { Good } from '../pages/good/Good';
+import { Test } from '../test/Test';
 
 const App = () => {
 
@@ -26,13 +25,13 @@ const App = () => {
       dispatch(fetchMe());
       dispatch(gettingGoods());
       nav("/main");
-  }, [dispatch])
+  }, [])
 
 
   return (
     <div className="app">
       <Header />
-
+      <Test />
       <Routes>
         <Route path='/register' element={<Register />}/>
         <Route path='/login' element={<Login />}/>

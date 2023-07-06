@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import "./good.scss";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 
 import { Tooltip } from './Tooltip';
+
+import { fetchMe } from '../../../redux/auth/AuthSlice';
+import { addToCart } from '../../../redux/goods/GoodsSlice';
 
 
 import sub from "../../../assets/icons/order/sub.png";
@@ -19,6 +22,7 @@ export const Good = () => {
   const { goods } = useSelector(state => state.goodsSlice);
   const { user } = useSelector(state => state.authSlice);
   const good = goods && goods.filter(item => item._id === id)[0];
+  const dispatch = useDispatch();
 
   const [amount, setAmount] = useState(1);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -42,20 +46,28 @@ export const Good = () => {
     }
   }
 
-  const cartHandler = () => {
+  const cartHandler = async() => {
     if(!user) {
       setShowTooltip(true);
       setTimeout(() => {
         setShowTooltip(false);
       }, 3000)
     }else {
-      nav("/main/cart")
+      // nav("/main/cart");
+      if(user.cart.filter(item => item._id === id).length === 0) {
+        await dispatch(addToCart({ goodId: id, additional: { amount } }));
+        await dispatch(fetchMe());
+      }
     }
   }
 
+  useEffect(() => {
+    dispatch(fetchMe());
+  }, [])
+
 
   return (
-    <div className='main'>
+    good && <div className='main'>
       <h2 className="main__good-subtitle">{good.title}</h2>
       <h1 className="main__good-title">{good.descr}</h1>
                     

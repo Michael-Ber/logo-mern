@@ -54,7 +54,7 @@ export const login = async(req, res) => {
 export const me = async(req, res) => {
     try {
         const user = await User.findById(req.userId);
-        const token = req.headers.authorization;
+        const token = (req.headers.authorization || '').replace(/Bearer\s?/, '');
         if(!user) return res.json({message: "Не авторизованы"})
         return res.json({user, token})
     } catch (error) {

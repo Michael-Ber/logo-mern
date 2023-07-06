@@ -10,12 +10,12 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        cort: [
-            { 
-                type: mongoose.Types.ObjectId,  
-                ref: "Cart"
-            }
-        ] 
+        cart: [
+            { type: Object }
+        ],
+        order: [
+            { type: Object }
+        ], 
     },
     { timestamps: true }
 );

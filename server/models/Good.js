@@ -30,7 +30,13 @@ const GoodSchema = new mongoose.Schema(
         },
         imgUrl: {
             type: String
-        } 
+        },
+        amount: {
+            type: Number
+        },
+        moreInfo: {
+            type: String
+        }
     }
 );
 

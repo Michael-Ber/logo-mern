@@ -129,14 +129,14 @@ export const Header = () => {
                             10:00-20:00
                         </span>
                     </div>
-                    <a href="cort.html" className="subheader__order">
+                    <Link to={"/main/cart"} className="subheader__order">
                         <div className="subheader__dumpster">
                             <img src={dump} alt="dumpster"/>
                         </div>
                         <div className="subheader__counts counts-subheader">
-                            <span className="counts-subheader__count">0</span>
+                            <span className="counts-subheader__count">{user && user.cart.length}</span>
                         </div>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

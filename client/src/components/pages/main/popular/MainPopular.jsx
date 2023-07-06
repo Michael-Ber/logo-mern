@@ -1,7 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './mainPopular.scss';
+
+
+import { addToCart } from '../../../../redux/goods/GoodsSlice';
+import { fetchMe } from '../../../../redux/auth/AuthSlice';
+import { setProcess } from '../../../../service/setProcess';
 
 import cartWhite from "../../../../assets/icons/main/dump_white.png";
 import cartOrange from "../../../../assets/icons/main/dump_orange.png";
@@ -18,7 +23,18 @@ import 'swiper/css/pagination';
 
 export const MainPopular = () => {
 
+    const dispatch = useDispatch();
+
     const { goods } = useSelector(state => state.goodsSlice);
+    const { user } = useSelector(state => state.authSlice);
+    const { status } = useSelector(state => state.goodsSlice);
+
+    const addHandler = async(id) => {
+        if(user.cart.filter(item => item._id === id).length === 0) {
+            await dispatch(addToCart({ goodId: id }));
+            await dispatch(fetchMe());
+        }
+    }
 
     const popularToRender = goods && goods.map((item, i) => {
         return (
@@ -45,8 +61,10 @@ export const MainPopular = () => {
                             <div className="hover-content-item__speed-value">{item.speed}</div>
                             <div className="hover-content-item__transf">Складывание:</div>
                             <div className="hover-content-item__transf-value">{item.folding ? 'Есть': 'Нет'}</div>
-                            <div className="hover-content-item__dumpster cort-trigger">
-                                <img src={cartOrange} alt="dumpster"/>
+                            <div 
+                                onClick={()=> addHandler(item._id)}
+                                className="hover-content-item__dumpster cort-trigger">
+                                {setProcess(status, <img src={cartOrange} alt="dumpster"/>)}
                             </div>
                             <div className="hover-content-item__old-cost">{item.oldCost} &#8381;</div>
                             <div className="hover-content-item__order">
