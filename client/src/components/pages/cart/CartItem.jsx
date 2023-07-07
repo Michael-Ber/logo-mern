@@ -7,15 +7,15 @@ import add from "../../../assets/icons/order/add.png";
 import { removeFromCart } from '../../../redux/goods/GoodsSlice';
 import { fetchMe } from '../../../redux/auth/AuthSlice';
 import { changeTotalOrder } from '../../../redux/goods/GoodsSlice';
+import { makeOrder } from '../../../redux/goods/GoodsSlice';
 
 export const CartItem = ({item}) => {
 
     const dispatch = useDispatch();
-    const [amount, setAmount] = useState(1);
+    const [amount, setAmount] = useState(1); 
 
-    const obj1 = {a: 4};
-    
-    
+
+     
     useEffect(() => {
         if(item.amount) {
             setAmount(item.amount)
@@ -28,8 +28,9 @@ export const CartItem = ({item}) => {
 
     const handleRemoveItem = async() => {
         await dispatch(removeFromCart({goodId: item._id}));
-        return await dispatch(fetchMe());
+        await dispatch(fetchMe());
     }
+
 
   return (
     <li key={item._id} className='yourOrder-main__item item-yourOrder'>

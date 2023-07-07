@@ -55,7 +55,7 @@ export const Header = () => {
                         </ul>
                     </nav>
                 </div>
-                <Link to={"/"} className="header__logo">
+                <Link to={"/main"} className="header__logo">
                     <div className="header__logo-title">LOGO</div>
                     <div className="header__logo-subtitle">Спортивный магазин</div>
                 </Link>
@@ -134,7 +134,7 @@ export const Header = () => {
                             <img src={dump} alt="dumpster"/>
                         </div>
                         <div className="subheader__counts counts-subheader">
-                            <span className="counts-subheader__count">{user && user.cart.length}</span>
+                            <span className="counts-subheader__count">{user ? user.cart.length: 0}</span>
                         </div>
                     </Link>
                 </div>

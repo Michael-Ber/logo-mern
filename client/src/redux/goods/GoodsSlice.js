@@ -9,6 +9,7 @@ const initialState = {
     cart: [],
     totalOrder: [],
     status: 'idle', 
+    message: null,
     error: null
 };
 
@@ -59,22 +60,60 @@ export const removeFromCart = createAsyncThunk(
     }
 );
 
+export const removeAll = createAsyncThunk(
+    'goods/removeAll',
+    async() => {
+        try {
+            return fetchData(`${url}/cart/remove_all`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + window.localStorage.getItem('token')
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+);
+
+export const makeOrder = createAsyncThunk(
+    'goods/makeOrder',
+    async({data}) => {
+        try {
+            return await fetchData(`${url}/make_order`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + window.localStorage.getItem('token')
+                },
+                body: JSON.stringify({data}) 
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+);
+
 const goodsSlice = createSlice({
     name: 'goods',
     initialState,
     reducers: {
         changeTotalOrder: (state, action) => { 
             if(state.totalOrder.filter(item => item.id === action.payload.id).length>0) {
-                state.totalOrder.map(item => {
+                return {...state, totalOrder:state.totalOrder.map(item => {
                     if(item.id === action.payload.id) {
-                        return ({...item, total: action.payload.total})
+                        return {...item, total: action.payload.total}
                     }
                     return item
-                })
+                })}
             }else {
                 state.totalOrder.push(action.payload);
             }
-        } 
+        },
+        clearTotalOrder: state => {
+            state.totalOrder = [];
+        }  
     },
     extraReducers: builder => {
         builder 
@@ -93,10 +132,29 @@ const goodsSlice = createSlice({
                 state.cart = action.payload.item;
             })
             .addCase(addToCart.rejected, (state, action) => { state.status = 'error' })
+
+            //REMOVE_FROM_CART
+            .addCase(removeFromCart.pending, state => { state.status = 'loading' })
+            .addCase(removeFromCart.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.totalOrder = state.totalOrder.filter(item=> item.id !== action.payload.item._id)  
+            })
+            .addCase(removeFromCart.rejected, (state, action) => { state.status = 'error' })
+
+            //MAKE_ORDER
+            .addCase(makeOrder.pending, state => { state.status = 'loading' })
+            .addCase(makeOrder.fulfilled, (state, action) => {
+                state.status = 'idle';  
+                state.message = action.payload.message;
+            })
+            .addCase(makeOrder.rejected, (state, action) => { state.status = 'error' })
     }
 });
 
 const { reducer, actions } = goodsSlice;
 export default reducer;
 
-export const { changeTotalOrder } = actions;
+export const { 
+    changeTotalOrder, 
+    clearTotalOrder 
+} = actions;

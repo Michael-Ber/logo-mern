@@ -13,6 +13,7 @@ export const getGoods = async(req, res) => {
 //add item to cart
 export const addItem = async(req, res) => {
     try {
+        
         if(!req.body) return res.json({message: "Bad request"});
         const { amount, ...rest } = req.body.additional;
         const item = await Good.findById(req.body.goodId);
@@ -41,5 +42,33 @@ export const removeItem = async(req, res) => {
         return res.json({message: "Removing item from cart successfully done", item})
     } catch (error) {
         res.json({message: "Error while deleting item from cart", error})
+    }
+}
+
+//remove all items from cart
+export const removeAll = async(req, res) => {
+    try {
+        // const user = await User.findById(req.userId);
+        await User.findByIdAndUpdate(
+            req.userId, 
+            { $pull: { cart: {}} }
+        );
+        return res.json({message: "All items were removed done"})
+    } catch (error) {
+        res.json({message: "Error while deleting item from cart", error})
+    }
+}
+
+//make order
+
+export const makeOrder = async(req, res) => {
+    try {
+        if(!req.body) return res.status(400).json({message: "No data"});
+        await User.findByIdAndUpdate(req.userId, {
+            $push: { order: req.body.data }
+        });
+        return res.json({message: "Спасибо за заказ, скоро мы с вами свяжемся"})
+    } catch (error) {
+        res.json({message: "Error while making order"})
     }
 }

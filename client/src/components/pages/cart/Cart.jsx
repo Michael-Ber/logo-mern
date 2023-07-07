@@ -1,24 +1,40 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { createPortal } from 'react-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import './cart.scss';
 
-import sub from "../../../assets/icons/order/sub.png";
-import add from "../../../assets/icons/order/add.png";
-
 import { CartItem } from './CartItem';
+import { makeOrder } from '../../../redux/goods/GoodsSlice';
+import { fetchMe } from '../../../redux/auth/AuthSlice';
+import { removeAll } from '../../../redux/goods/GoodsSlice';
+import { clearTotalOrder } from '../../../redux/goods/GoodsSlice';
+
+import { spaceBetweenThousand } from '../../../utils/spaceBetweenThousand';
+import { setProcess } from '../../../service/setProcess';
+
+import { Modal } from '../../modal/Modal';
 
 export const Cart = () => {
 
+  //SELECTORS
   const { user } = useSelector(state => state.authSlice);
+  const { totalOrder, status, message } = useSelector(state => state.goodsSlice);
+  const totalOrderNum = spaceBetweenThousand(totalOrder.reduce((sum, item) => item.total + sum, 0));
 
+  const dispatch = useDispatch();
+
+  //REFS
   const btnsRef = useRef(null);
   const contentsRef = useRef(null);
 
+  //STATES
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [mail, setMail] = useState('');
+  const [showModal, setShowModal] = useState(false);
   
   const [activeTab, setActiveTab] = useState('fast');
 
-  useEffect(() => {
-  }, [])
 
   const handleTabs = (e) => {
     Array.from(btnsRef.current.children)
@@ -29,9 +45,20 @@ export const Cart = () => {
     e.target.classList.add('tabs-order__btn_active');
     document.querySelector(`form[data-order = ${e.target.dataset.order}]`).classList.add('order-main__form_active');
     setActiveTab(e.target.dataset.order);
-    
   }
 
+  const handleOrder = async(e) => {
+    e.preventDefault();
+    await dispatch(makeOrder({data: {totalOrder, name, phone, mail}}));
+    setName('');
+    setPhone('');
+    setMail('');
+    await dispatch(removeAll());
+    await dispatch(clearTotalOrder());
+    await dispatch(fetchMe());
+    setShowModal(true);
+  }  
+ 
   const orderElements = (user && user.cart.length > 0) && user.cart.map(item => {
     return (
       <CartItem key={item._id} item={item} />
@@ -60,12 +87,17 @@ export const Cart = () => {
                 aria-label="regions button">Доставка в регионы</button>
           </div>
           <div ref={contentsRef} className="order-main__content">
-              <form action="#" className="order-main__form" data-order="regions">
+              <form onSubmit={e => handleOrder(e)} className="order-main__form" data-order="regions">
                   <div className="main__data">
                       <div className="order-main__left">
                           <label htmlFor="surname" className="order-main__label">
                               <span>Фамилия:<span className="order-main__star"> *</span></span>
-                              <input required name="surname" id="surname" type="text" className="order-main__input"/>
+                              <input 
+                                required 
+                                name="surname" 
+                                id="surname" 
+                                type="text" 
+                                className="order-main__input"/>
                           </label>
                           <label htmlFor="name" className="order-main__label">
                               <span>Имя:<span className="order-main__star"> *</span></span>
@@ -140,25 +172,46 @@ export const Cart = () => {
                         { activeTab === 'regions' &&  orderElements }
                       </ul>
                       <div className="yourOrder-main__sum">
-                          <span>Итого:</span> <strong>0</strong> &#8381;
+                          <span>Итого:</span> <strong>{totalOrderNum}</strong> &#8381;
                       </div>
-                      <button type="submit" className="yourOrder-main__submit">оформить заказ</button>
+                      <button type="submit" className="yourOrder-main__submit">{setProcess(status, 'оформить заказ')}</button>
                   </div>
               </form>
-              <form action="#" className="order-main__form order-main__form_active" data-order="fast">
+              <form onSubmit={e => handleOrder(e)} className="order-main__form order-main__form_active" data-order="fast">
                   <div className="main__data">
                       <div className="order-main__left">
                           <label htmlFor="name-short" className="order-main__label">
                               <span>Имя:<span className="order-main__star"> *</span></span>
-                              <input required name="name-short" id="name-short" type="text" className="order-main__input"/>
+                              <input 
+                                required
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                                name="name-short" 
+                                id="name-short" 
+                                type="text" 
+                                className="order-main__input"/>
                           </label>
                           <label htmlFor="phone-short" className="order-main__label">
                               <span>Моб. телефон:<span className="order-main__star"> *</span></span>
-                              <input required name="phone-short" id="phone-short" type="text" className="order-main__input"/>
+                              <input 
+                                required 
+                                value={phone}
+                                onChange={e => setPhone(e.target.value)}
+                                name="phone-short" 
+                                id="phone-short" 
+                                type="number" 
+                                className="order-main__input"/>
                           </label>
                           <label htmlFor="mail-short" className="order-main__label">
                               <span>Ваш E-mail:<span className="order-main__star"> *</span></span>
-                              <input required name="mail-short" id="mail-short" type="text" className="order-main__input"/>
+                              <input 
+                                required 
+                                value={mail}
+                                onChange={e => setMail(e.target.value)}
+                                name="mail-short" 
+                                id="mail-short" 
+                                type="email" 
+                                className="order-main__input"/>
                           </label>
                           <label htmlFor="subscribe-short" className="order-main__label order-main__label_checkbox label-order">
                               <input name="subscribe-short" id="subscribe-short" type="checkbox" className="order-main__checkbox"/>
@@ -183,12 +236,12 @@ export const Cart = () => {
                         { activeTab === 'fast' && orderElements }
                       </ul>
                       <div className="yourOrder-main__sum">
-                          <span>Итого:</span> <strong>0</strong> &#8381;
+                          <span>Итого:</span> <strong>{totalOrderNum}</strong> &#8381;
                       </div>
-                      <button type="submit" className="yourOrder-main__submit">оформить заказ</button>
+                      <button type="submit" className="yourOrder-main__submit">{setProcess(status, 'оформить заказ')}</button>
                   </div>
               </form>
-              <form action="#" className="order-main__form" data-order="moscow">
+              <form onSubmit={e => handleOrder(e)} className="order-main__form" data-order="moscow">
                   <div className="main__data">
                       <div className="order-main__left">
                           <label htmlFor="name-moscow" className="order-main__label">
@@ -226,13 +279,14 @@ export const Cart = () => {
                           { activeTab === 'moscow' && orderElements }
                       </ul>
                       <div className="yourOrder-main__sum">
-                          <span>Итого:</span> <strong>0</strong> &#8381;
+                          <span>Итого:</span> <strong>{totalOrderNum}</strong> &#8381;
                       </div>
-                      <button type="submit" className="yourOrder-main__submit">оформить заказ</button>
+                      <button type="submit" className="yourOrder-main__submit">{setProcess(status, 'оформить заказ')}</button>
                   </div>
               </form>
           </div>
       </div>
+      <Modal message={message} showModal={showModal} setShowModal={setShowModal}/>
     </div>
   )
 }
