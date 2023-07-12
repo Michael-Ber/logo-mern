@@ -15,6 +15,8 @@ import { Footer } from '../footer/Footer';
 import Main from '../pages/main/Main';
 import { Catalog } from '../pages/catalog/Catalog';
 import { Test } from '../test/Test';
+import { Page404 } from '../pages/404/Page404';
+import { ErrorBoundary } from '../errorBoundary/ErrorBoundary';
 
 const App = () => {
 
@@ -24,7 +26,7 @@ const App = () => {
   useEffect(() => {
       dispatch(fetchMe());
       dispatch(gettingGoods());
-      nav("/main");
+      // nav("/main");
   }, [])
 
 
@@ -33,12 +35,12 @@ const App = () => {
       <Header />
       <Test />
       <Routes>
-        <Route path='/register' element={<Register />}/>
-        <Route path='/login' element={<Login />}/>
-        <Route path='/catalog' element={<Catalog />}/>
+        <Route path='/register' element={<ErrorBoundary><Register /></ErrorBoundary>}/>
+        <Route path='/login' element={<ErrorBoundary><Login /></ErrorBoundary>}/>
+        <Route path='/catalog' element={<ErrorBoundary><Catalog /></ErrorBoundary>}/>
         
-        <Route path='/main/*' element={<Main />}/>
-
+        <Route path='/main/*' element={<ErrorBoundary><Main /></ErrorBoundary>}/>
+        <Route path='*' element={<ErrorBoundary><Page404 /></ErrorBoundary>}/>
         
       </Routes>
       <Footer />

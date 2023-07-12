@@ -28,7 +28,8 @@ export const CartItem = ({item}) => {
 
     const handleRemoveItem = async() => {
         await dispatch(removeFromCart({goodId: item._id}));
-        await dispatch(fetchMe());
+        await dispatch(changeTotalOrder)
+        return await dispatch(fetchMe());
     }
 
 

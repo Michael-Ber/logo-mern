@@ -1,22 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import "./good.scss";
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { Tooltip } from './Tooltip';
+import { InputChangeAmount } from './InputChangeAmount';
 
 import { fetchMe } from '../../../redux/auth/AuthSlice';
 import { addToCart } from '../../../redux/goods/GoodsSlice';
 
 
-import sub from "../../../assets/icons/order/sub.png";
-import add from "../../../assets/icons/order/add.png";
 import assembly from "../../../assets/icons/goods/free_assembly.png";
 import delivery from "../../../assets/icons/goods/free_delivery.png";
 import garanty from "../../../assets/icons/goods/garanty.png";
 import dump from "../../../assets/icons/main/dump_orange.png";
+import { Page404 } from '../404/Page404';
 
-export const Good = () => {
+export const Good = memo(() => {
 
   const { id } = useParams();
   const { goods } = useSelector(state => state.goodsSlice);
@@ -24,13 +24,12 @@ export const Good = () => {
   const good = goods && goods.filter(item => item._id === id)[0];
   const dispatch = useDispatch();
 
-  const [amount, setAmount] = useState(1);
+  const inputRef = useRef(1);
   const [showTooltip, setShowTooltip] = useState(false);
 
   const btnsRef = useRef(null);
   const contentsRef = useRef(null);
 
-  const nav = useNavigate();
 
   const handleTabs = (e) => {
     Array.from(btnsRef.current.children)
@@ -45,7 +44,6 @@ export const Good = () => {
       document.querySelector(`div[data-tab = ${e.target.dataset.tab}]`).classList.add('contents-good-tabs--main__content_active')
     }
   }
-
   const cartHandler = async() => {
     if(!user) {
       setShowTooltip(true);
@@ -55,22 +53,34 @@ export const Good = () => {
     }else {
       // nav("/main/cart");
       if(user.cart.filter(item => item._id === id).length === 0) {
-        await dispatch(addToCart({ goodId: id, additional: { amount } }));
+        await dispatch(addToCart({ goodId: id, additional: { amount: inputRef.current.value } }));
         await dispatch(fetchMe());
       }
     }
   }
-
+  const addAmount = () => {
+    let res = Number(inputRef.current.value);
+    res += 1;
+    inputRef.current.value = res;
+    return inputRef.current.value
+  };
+  const subAmount = () => {
+    let res = Number(inputRef.current.value);
+    res -= 1;
+    inputRef.current.value = res;
+    return inputRef.current.value
+  }
+   
   useEffect(() => {
     dispatch(fetchMe());
   }, [])
 
 
+
   return (
-    good && <div className='main'>
+    good ? <div className='main'>
       <h2 className="main__good-subtitle">{good.title}</h2>
       <h1 className="main__good-title">{good.descr}</h1>
-                    
         <div className="main__good good-main">
             <div className="good-main__left">
                 <div className="good-main__wrapper">
@@ -110,23 +120,7 @@ export const Good = () => {
                                 <p className="descr-order-info-good-main__old-price">{good.oldCost} <span>&#8381;</span></p>
                                 <p className="descr-order-info-good-main__new-price">{good.newCost} <span>&#8381;</span></p>
                             </div>
-                            <div className="order-info-good-main__amount amount-order-info-good-main">
-                                <img 
-                                  onClick={() => setAmount(state => state > 1 ? state - 1: 1)}
-                                  src={sub} 
-                                  alt="arrow-sub" 
-                                  className="amount-order-info-good-main__sub"/>
-                                <input 
-                                  value={amount}
-                                  onChange={e => setAmount(e.target.value)}
-                                  type="number" 
-                                  className="amount-order-info-good-main__input"/>
-                                <img 
-                                  onClick={() => setAmount(state => state < 10 ? state + 1: 10)}
-                                  src={add} 
-                                  alt="arrow-add" 
-                                  className="amount-order-info-good-main__add"/>
-                            </div>
+                            <InputChangeAmount inputRef={inputRef} addAmount={addAmount} subAmount={subAmount}/>
                             <div 
                               onClick={cartHandler}
                               className="order-info-good-main__cort cort-order-info-good-main">
@@ -364,5 +358,6 @@ export const Good = () => {
         </div>
         
     </div>
+    : <Page404 />
   )
-}
+})
