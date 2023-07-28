@@ -1,14 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useEffect, useState } from 'react';
 import './mainSponsors.scss';
 
 import { fetchData } from '../../../../service/fetchData';
 
-import oxygen from "../../../../assets/icons/main/brands/oxygen.png";
-import hasttings from "../../../../assets/icons/main/brands/hasttings.png";
-import carbon from "../../../../assets/icons/main/brands/carbon.png";
-import nordictrack from "../../../../assets/icons/main/brands/nordictrack.png";
-import clearfit from "../../../../assets/icons/main/brands/clearfit.png";
 import arrowLeft from "../../../../assets/icons/main/arrow_left.png";
 import arrowRight from "../../../../assets/icons/main/arrow_right.png";
 
@@ -21,9 +15,6 @@ import 'swiper/css/pagination';
 export const MainSponsors = () => {
 
     const [sponsors, setSponsors] = useState(null);
-
-    const prev = useRef(null);
-    const next = useRef(null);
 
     useEffect(() => {
         fetchData("https://logo-0f9b.onrender.com/sponsors", {})

@@ -60,8 +60,8 @@ export const Header = () => {
                     <div className="header__logo-subtitle">Спортивный магазин</div>
                 </Link>
                 <div className="header__auth">
-                    <a href="#" className="header__auth-link">Вход /</a>
-                    <a href="#" className="header__auth-link">Регистрация</a>
+                    <Link to={"/login"} className="header__auth-link">Вход /</Link>
+                    <Link to={"/register"} className="header__auth-link">Регистрация</Link>
                 </div>
                 <div className="header__submain">
                     <ul className="header__tel-list">
