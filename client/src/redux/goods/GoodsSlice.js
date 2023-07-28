@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { fetchData } from "../../service/fetchData";
 
-const url = 'http://localhost:3006/goods'
+const url = 'https://logo-0f9b.onrender.com/goods'
 
 const initialState = {
     goods: null,

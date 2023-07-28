@@ -9,7 +9,7 @@ const initialState = {
     status: 'idle'
 };
 
-const url = 'http://localhost:3006/api/auth'
+const url = 'https://logo-0f9b.onrender.com'
 
 export const fetchRegister = createAsyncThunk(
     'auth/fetchRegister',

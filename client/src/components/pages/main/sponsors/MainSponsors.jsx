@@ -26,7 +26,7 @@ export const MainSponsors = () => {
     const next = useRef(null);
 
     useEffect(() => {
-        fetchData("http://localhost:3006/sponsors", {})
+        fetchData("https://logo-0f9b.onrender.com/sponsors", {})
             .then(res => setSponsors(res.sponsors))
             .catch((e) => console.log(e))
     }, [])
