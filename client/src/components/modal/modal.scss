@@ -41,7 +41,7 @@
     &__btn {
         @include roboto;
         font-size: 18px;
-        width: 70px;
+        width: 100px;
         padding: 7px;
         cursor: pointer;
         @media(max-width: 575px) {

@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import './app.scss';
 
-import { fetchRegister } from '../../redux/auth/AuthSlice';
 import { fetchMe } from '../../redux/auth/AuthSlice';
 import { gettingGoods } from '../../redux/goods/GoodsSlice';
 
@@ -26,7 +25,7 @@ const App = () => {
   useEffect(() => {
       dispatch(fetchMe());
       dispatch(gettingGoods());
-      // nav("/main");
+      nav("/main");
   }, [])
 
 
