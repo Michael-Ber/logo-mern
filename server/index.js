@@ -12,7 +12,7 @@ dotenv.config();
 
 //VARS
 const db_name = process.env.DB_NAME;
-const port = process.env.PORT;
+const port = process.env.PORT || 3005;
 
 //MIDDLEWARES
 app.use(express.json());
@@ -25,7 +25,7 @@ app.use("/sponsors", sponsorsRouter);
 
 async function start() {
     try {
-        await mongoose.connect(`mongodb://localhost:27017/${db_name}`);
+        await mongoose.connect(`mongodb+srv://mikeber000:11zlatmax22@clusterzlatmax.kdrp7zk.mongodb.net/${process.env.DB_NAME}`);
         app.listen(port, () => console.log(`Server working on port: ${port}`))
     } catch (error) {   
         console.log(`Server error: ${error}`)
