@@ -15,6 +15,7 @@ import delivery from "../../../assets/icons/goods/free_delivery.png";
 import garanty from "../../../assets/icons/goods/garanty.png";
 import dump from "../../../assets/icons/main/dump_orange.png";
 import { Page404 } from '../404/Page404';
+import { Spinner } from '../../spinner/Spinner';
 
 export const Good = memo(() => {
 
@@ -25,7 +26,9 @@ export const Good = memo(() => {
   const dispatch = useDispatch();
 
   const inputRef = useRef(1);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [showTooltipAuth, setShowTooltipAuth] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [showTooltipCart, setShowTooltipCart] = useState(false);
 
   const btnsRef = useRef(null);
   const contentsRef = useRef(null);
@@ -46,15 +49,23 @@ export const Good = memo(() => {
   }
   const cartHandler = async() => {
     if(!user) {
-      setShowTooltip(true);
+        setShowTooltipAuth(true);
       setTimeout(() => {
-        setShowTooltip(false);
+        setShowTooltipAuth(false);
       }, 3000)
     }else {
       // nav("/main/cart");
+      setShowSpinner(true);
       if(user.cart.filter(item => item._id === id).length === 0) {
         await dispatch(addToCart({ goodId: id, additional: { amount: inputRef.current.value } }));
+        setShowSpinner(false);
         await dispatch(fetchMe());
+      }else {
+        setShowSpinner(false);
+        setShowTooltipCart(true);
+        setTimeout(() => {
+            setShowTooltipCart(false);
+        }, 3000)
       }
     }
   }
@@ -125,10 +136,11 @@ export const Good = memo(() => {
                               onClick={cartHandler}
                               className="order-info-good-main__cort cort-order-info-good-main">
                                 <p className="cort-order-info-good-main__btn">В корзину</p>
-                                <p className="cort-order-info-good-main__to-cort">
-                                    <img src={dump} alt="cort"/>
-                                </p>
-                                <Tooltip show={showTooltip} message={'Необходима авторизация'}/>
+                                <div className="cort-order-info-good-main__to-cort">
+                                    {showSpinner ? <Spinner /> : <img src={dump} alt="cort"/>}
+                                    <Tooltip show={showTooltipCart} message={'Товар уже в корзине'}/>
+                                </div>
+                                <Tooltip show={showTooltipAuth} message={'Необходима авторизация'}/>
                             </div>
                         </div>
                     </div>
