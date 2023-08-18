@@ -7,7 +7,6 @@ import add from "../../../assets/icons/order/add.png";
 import { removeFromCart } from '../../../redux/goods/GoodsSlice';
 import { fetchMe } from '../../../redux/auth/AuthSlice';
 import { changeTotalOrder } from '../../../redux/goods/GoodsSlice';
-import { makeOrder } from '../../../redux/goods/GoodsSlice';
 
 export const CartItem = ({item}) => {
 

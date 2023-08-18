@@ -25,7 +25,7 @@ app.use("/sponsors", sponsorsRouter);
 
 async function start() {
     try {
-        await mongoose.connect(`mongodb+srv://mikeber000:11zlatmax22@clusterzlatmax.kdrp7zk.mongodb.net/${process.env.DB_NAME}`);
+        await mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}@clusterzlatmax.kdrp7zk.mongodb.net/${process.env.DB_NAME}`);
         app.listen(port, () => console.log(`Server working on port: ${port}`))
     } catch (error) {   
         console.log(`Server error: ${error}`)

@@ -54,7 +54,6 @@ export const Good = memo(() => {
         setShowTooltipAuth(false);
       }, 3000)
     }else {
-      // nav("/main/cart");
       setShowSpinner(true);
       if(user.cart.filter(item => item._id === id).length === 0) {
         await dispatch(addToCart({ goodId: id, additional: { amount: inputRef.current.value } }));

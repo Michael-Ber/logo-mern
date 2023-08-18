@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
-import './app.scss';
-
 import { fetchMe } from '../../redux/auth/AuthSlice';
 import { gettingGoods } from '../../redux/goods/GoodsSlice';
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
 import sub from "../../../assets/icons/order/sub.png";
 import add from "../../../assets/icons/order/add.png";

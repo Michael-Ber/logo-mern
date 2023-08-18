@@ -1,5 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './cart.scss';
 

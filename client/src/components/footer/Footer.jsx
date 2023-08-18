@@ -23,7 +23,6 @@ import okIcon from "../../assets/icons/main/socials/ok.png";
 export const Footer = () => {
   return (
     <footer className="footer">
-        {/* <div className="container"> */}
             <div className="footer__main">
                 <div className="footer__left">
                     <div className="footer__delivery">
@@ -119,7 +118,6 @@ export const Footer = () => {
                     </li>
                 </ul>
             </div>
-        {/* </div> */}
     </footer>
   )
 }
